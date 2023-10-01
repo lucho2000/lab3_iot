@@ -92,14 +92,14 @@ public class Pagina2Activity extends AppCompatActivity {
                     .commit();
         }*/
 
-        if(sensorManager != null){
+        /*if(sensorManager != null){
             Sensor mAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             if(mAccelerometer != null){
                 Log.d("msg-test","Sí tiene acelerómetro");
             }else{
                 Log.d("msg-test","No tiene acelerómetro");
             }
-        }
+        }*/
 
 
 
@@ -140,21 +140,6 @@ public class Pagina2Activity extends AppCompatActivity {
 
 
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Sensor mAcc = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(listener,mAcc,SensorManager.SENSOR_DELAY_NORMAL);
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        sensorManager.unregisterListener(listener);
-    }
-
 
     //obtener datos de la api
     public void obtenerWs(){
@@ -198,4 +183,12 @@ public class Pagina2Activity extends AppCompatActivity {
             }
         });
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
 }

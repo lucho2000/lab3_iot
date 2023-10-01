@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.lab3_iot.Sensor.SensorListener;
 import com.example.lab3_iot.databinding.FragmentBlankAcelerometroBinding;
 
 
@@ -20,6 +21,10 @@ public class BlankFragmentAcelerometro extends Fragment {
 
     FragmentBlankAcelerometroBinding binding;
     ResultAdapter resultAdapter;
+
+    SensorManager sensorManager;
+
+    SensorListener listener = new SensorListener();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,12 +51,25 @@ public class BlankFragmentAcelerometro extends Fragment {
 
         binding.recyclerViewAcelero.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
+        //iniciando el listener del acelerometro
+        listener = new SensorListener(getContext(), binding.recyclerViewAcelero);
+        listener.startAcelerometer();
         return binding.getRoot();
 
 
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
+    //se desregistra el listener del sensor
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        listener.stopAcelerometer();
+    }
 }
