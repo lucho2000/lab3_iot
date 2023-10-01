@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.lab3_iot.entity.Result;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultViewHolder>{
@@ -21,12 +23,29 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
     private List<Result> listaContactos;
     private Context context;
 
+    private OnItemClickListener listener;
+
+    public ResultAdapter(List<Result> listaContactos, Context context) {
+
+        this.listaContactos = listaContactos;
+        this.context = context;
+    }
+
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener clickListener){
+        listener = clickListener;
+    }
+
     @NonNull
     @Override
     public ResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.item_rv1, parent, false);
-        return new ResultViewHolder(view);
+        return new ResultViewHolder(view, listener);
     }
 
     @Override
@@ -42,6 +61,8 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         Picasso.get()
                 .load(imageUrl)
                 .into(imageView);
+
+        //ImageView imagenCerrar = holder.itemView.findViewById(R.id.imageViewCerrar);
 
 
         TextView textViewNomApe = holder.itemView.findViewById(R.id.textViewNombreApellido);
@@ -63,6 +84,9 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         TextView textViewPhone = holder.itemView.findViewById(R.id.textViewPhone);
         textViewPhone.setText("phone: " + result.getPhone());
 
+        ImageView imagenCerrar = holder.itemView.findViewById(R.id.imageViewCerrar);
+        //imagenCerrar.setImageResource();
+
 
     }
 
@@ -75,8 +99,18 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
     public class ResultViewHolder extends RecyclerView.ViewHolder{
 
         Result result;
-        public ResultViewHolder(@NonNull View itemView) {
+        public ResultViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
+
+            //funcionalidad para el boton de cerrar en el card
+            ImageView imagenCerrar = itemView.findViewById(R.id.imageViewCerrar);
+            imagenCerrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(getAdapterPosition());
+                }
+            });
+
         }
     }
 
