@@ -1,5 +1,8 @@
 package com.example.lab3_iot;
 
+import static android.content.Context.SENSOR_SERVICE;
+
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +19,7 @@ public class BlankFragmentAcelerometro extends Fragment {
 
     FragmentBlankAcelerometroBinding binding;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -23,6 +27,10 @@ public class BlankFragmentAcelerometro extends Fragment {
         binding = FragmentBlankAcelerometroBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
+
+
+
+
     }
 
 

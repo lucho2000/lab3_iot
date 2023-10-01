@@ -5,10 +5,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
+import com.example.lab3_iot.Sensor.SensorListener;
 import com.example.lab3_iot.databinding.ActivityPagina2Binding;
 import com.example.lab3_iot.entity.Respuesta;
 import com.example.lab3_iot.retrofit.Api;
@@ -27,13 +30,18 @@ public class Pagina2Activity extends AppCompatActivity {
 
     Button botonAnadir;
 
+    SensorManager sensorManager;
+
+    SensorListener listener = new SensorListener();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPagina2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         botonIrA = findViewById(R.id.buttonIrASensor);
         botonAnadir = findViewById(R.id.buttonAnadir);
 
@@ -52,6 +60,17 @@ public class Pagina2Activity extends AppCompatActivity {
                     .commit();
         }*/
 
+        if(sensorManager != null){
+            Sensor mAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            if(mAccelerometer != null){
+                Log.d("msg-test","Sí tiene acelerómetro");
+            }else{
+                Log.d("msg-test","No tiene acelerómetro");
+            }
+        }
+
+
+
         //para alternar entre fragments
         botonIrA.setOnClickListener(view -> {
 
@@ -59,18 +78,16 @@ public class Pagina2Activity extends AppCompatActivity {
                 navController.navigate(R.id.action_blankFragment1_to_blankFragmentAcelerometro);
                 //navController.popBackStack();
                 //esFragmentVisible =false;
-                botonIrA.setText("IR A MAGNETOMETRO");
+                botonIrA.setText("Ir a Magnetometro");
             } else {
 
                 navController.navigate(R.id.action_blankFragmentAcelerometro_to_blankFragment1);
                 //navController.popBackStack();
                 //esFragmentVisible=true;
-                botonIrA.setText("IR A ACELEROMETRO");
+                botonIrA.setText("IR a Acelerometro");
             }
 
-
             //navController.popBackStack();
-
         });
 
 
@@ -83,6 +100,19 @@ public class Pagina2Activity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Sensor mAcc = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(listener,mAcc,SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        sensorManager.unregisterListener(listener);
+    }
 
 
     //obtener datos de la api

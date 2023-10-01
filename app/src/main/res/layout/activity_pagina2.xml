@@ -19,26 +19,28 @@
 
     <Button
         android:id="@+id/buttonIrASensor"
-        android:layout_width="214dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="30dp"
+        android:layout_width="211dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="#CDDC39"
         android:text="IR A "
         android:textAlignment="viewStart"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonAnadir"
-        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView2" />
 
     <Button
         android:id="@+id/buttonAnadir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginBottom="16dp"
-        android:text="añadir"
+        android:backgroundTint="#CC1717"
+        android:text="Añadir"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

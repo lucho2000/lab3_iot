@@ -1,6 +1,7 @@
 package com.example.lab3_iot;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
 
         TextView textViewNomApe = holder.itemView.findViewById(R.id.textViewNombreApellido);
         textViewNomApe.setText(result.getName().getFirst() + " " + result.getName().getLast());
+        Log.d("nombre", "nombre: " + result.getName().getFirst());
 
         TextView textViewGenero = holder.itemView.findViewById(R.id.textViewGenero);
         textViewGenero.setText("Genero: " + result.getGender());
