@@ -1,18 +1,16 @@
 package com.example.lab3_iot;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
-import com.example.lab3_iot.databinding.ActivityMainBinding;
 import com.example.lab3_iot.databinding.ActivityPagina2Binding;
-import com.example.lab3_iot.entity.BlankFragment1;
 import com.example.lab3_iot.entity.Respuesta;
-import com.example.lab3_iot.entity.Result;
 import com.example.lab3_iot.retrofit.Api;
 
 import retrofit2.Call;
@@ -27,6 +25,8 @@ public class Pagina2Activity extends AppCompatActivity {
     ActivityPagina2Binding binding;
     Button botonIrA;
 
+    Button botonAnadir;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,37 +35,50 @@ public class Pagina2Activity extends AppCompatActivity {
 
 
         botonIrA = findViewById(R.id.buttonIrASensor);
+        botonAnadir = findViewById(R.id.buttonAnadir);
 
-        if (savedInstanceState == null) {
+
+        //NavController navController = Navigation.findNavController(Pagina2Activity.this, R.id.fragmentContainerView4);
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView4);
+        assert navHostFragment != null;
+        NavController navController = navHostFragment.getNavController();
+
+
+        /*if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.fragmentContainerViewMagnetometro, BlankFragment1.class, null)
+                    .add(R.id.fragmentContainerView4, BlankFragment1.class, null)
                     .commit();
-        }
+        }*/
 
+        //para alternar entre fragments
         botonIrA.setOnClickListener(view -> {
 
-            if (esFragmentVisible) {
-                getSupportFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.fragmentContainerViewMagnetometro, BlankFragmentAcelerometro.class, null)
-                        .commit();
-                esFragmentVisible =false;
+            if (navController.getCurrentDestination().getId() == R.id.blankFragment1) {
+                navController.navigate(R.id.action_blankFragment1_to_blankFragmentAcelerometro);
+                //navController.popBackStack();
+                //esFragmentVisible =false;
                 botonIrA.setText("IR A MAGNETOMETRO");
             } else {
 
-                getSupportFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.fragmentContainerViewMagnetometro, BlankFragment1.class, null)
-                        .commit();
-                esFragmentVisible=true;
+                navController.navigate(R.id.action_blankFragmentAcelerometro_to_blankFragment1);
+                //navController.popBackStack();
+                //esFragmentVisible=true;
                 botonIrA.setText("IR A ACELEROMETRO");
             }
 
 
+            //navController.popBackStack();
 
         });
 
+
+        botonAnadir.setOnClickListener(view -> {
+
+            obtenerWs();
+
+        });
 
 
     }
@@ -73,7 +86,7 @@ public class Pagina2Activity extends AppCompatActivity {
 
 
     //obtener datos de la api
-    /*public void obtenerWs(){
+    public void obtenerWs(){
 
         Api typicodeService = new Retrofit.Builder()
                 .baseUrl("https://randomuser.me")
@@ -87,9 +100,12 @@ public class Pagina2Activity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     Respuesta respuesta = response.body();
 
-                    Result result = respuesta.getResults().get(0);
-                    textViewUsername.setText(result.getLogin().getUsername() );
-                    textViewNombApellido.setText( result.getName().getFirst() + " " + result.getName().getLast() );
+
+                    ResultAdapter resultAdapter = new ResultAdapter();
+                    resultAdapter.setContext(Pagina2Activity.this);
+                    resultAdapter.setListaContactos(respuesta.getResults());
+
+
 
                 } else {
                     Log.d( "msg-test", "error de consulta" );
@@ -102,5 +118,5 @@ public class Pagina2Activity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
-    }*/
+    }
 }

@@ -3,6 +3,9 @@ package com.example.lab3_iot.entity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +25,7 @@ public class BlankFragment1 extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentBlank1Binding.inflate(inflater,container,false);
 
-
+        //NavController navController = NavHostFragment.findNavController(BlankFragment1.this);
 
 
         return binding.getRoot();
