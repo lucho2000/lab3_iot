@@ -2,6 +2,8 @@ package com.example.lab3_iot;
 
 import static android.content.Context.SENSOR_SERVICE;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 

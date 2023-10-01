@@ -7,10 +7,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import com.example.lab3_iot.Sensor.SensorListener;
@@ -115,6 +118,35 @@ public class Pagina2Activity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).add(R.id.fragmentContainerView4, BlankFragmentAcelerometro.class, null).commit();
                 navController.navigate(R.id.action_blankFragment1_to_blankFragmentAcelerometro);
 
+                //para el alert dialog haciendo click en la imagen del ojito
+                binding.imageView2.setOnClickListener(view1 -> {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Pagina2Activity.this);
+                    // Establece el título del diálogo
+                    builder.setTitle("Detalles - Acelerómetro");
+
+                    // Establece el mensaje del diálogo
+                    builder.setMessage("Haga CLICK en 'Añadir' para añadir contactos a su lista." +
+                            "Esta aplicacion esta utilizando el ACELEROMETRO de su telefono. " +
+                            "De esta forma, la lista hara scroll hacia abajo " +
+                            "cuando agite su dispositivo.      ");
+
+
+                    builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Código a ejecutar cuando se hace clic en el botón "Aceptar"
+                            // Puedes poner aquí la lógica que desees.
+                        }
+                    });
+
+                    // Crea el AlertDialog
+                    AlertDialog dialog = builder.create();
+
+                    // Muestra el AlertDialog
+                    dialog.show();
+                });
+
+
             } else {
 
                 //estamos en magnetometro
@@ -127,6 +159,32 @@ public class Pagina2Activity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).add(R.id.fragmentContainerView4, BlankFragment1.class, null).commit();
                 navController.navigate(R.id.action_blankFragmentAcelerometro_to_blankFragment1);
 
+                binding.imageView2.setOnClickListener(view1 -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Pagina2Activity.this);
+                    // Establece el título del diálogo
+                    builder.setTitle("Detalles - Magnetómetro");
+
+                    // Establece el mensaje del diálogo
+                    builder.setMessage("Haga CLICK en 'Añadir' para añadir contactos a su lista." +
+                            "Esta aplicacion esta utilizando el MAGNETOMETRO de su telefono. " +
+                            "De esta forma, se mostrará el 100% cuando se apunte al NORTE  " +
+                            "Caso contrario se desvanecerá.      ");
+
+
+                    builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Código a ejecutar cuando se hace clic en el botón "Aceptar"
+                            // Puedes poner aquí la lógica que desees.
+                        }
+                    });
+
+                    // Crea el AlertDialog
+                    AlertDialog dialog = builder.create();
+
+                    // Muestra el AlertDialog
+                    dialog.show();
+                });
+
             }
 
             //navController.popBackStack();
@@ -134,7 +192,30 @@ public class Pagina2Activity extends AppCompatActivity {
 
         binding.buttonAnadir.setOnClickListener(view -> {
 
-            obtenerWs();
+            //barra de progreso al cargar el añadir contacto
+            binding.loadingProgressBar.setVisibility(View.VISIBLE);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    obtenerWs(); //meotod para llamar a la API
+
+                    try {
+                        Thread.sleep(2000);// Dura 2 segundos
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            binding.loadingProgressBar.setVisibility(View.GONE);//se oculta el progress bar
+                        }
+                    });
+                }
+            }).start();
+
 
         });
 
