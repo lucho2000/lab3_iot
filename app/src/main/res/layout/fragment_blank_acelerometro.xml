@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:text="¡ Acelerometro !"
         android:textColor="@color/white"
+        android:fontFamily="@font/tipo_letra"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewAcelero"
